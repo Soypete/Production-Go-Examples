@@ -23,10 +23,10 @@ Adding a linter to your developer environment (IDE or text editor) can same your
 Below are examples of my personal linting configurations.
 ### VSCODE
 
-![img/vscode.png]
+![vscode coming](img/vscode.png)
 
 ### Vim
 
-![img/vim.png](https://github.com/Soypete/dotfiles/blob/main/vim/vimrc)
-
+![vim-go config](img/vim.png)
+[link to dotfiles](https://github.com/Soypete/dotfiles/blob/main/vim/vimrc)
 
