@@ -1,0 +1,29 @@
+run:
+  timeout: 5m
+  issues-exit-code: 2
+  tests: false
+  modules-download-mode: readonly
+  go: '1.18' 
+  linters:
+  enable:
+    - bodyclose
+    - deadcode
+    - dogsled
+    - errcheck
+    - goconst
+    - gocyclo
+    - gofmt
+    - gosimple
+    - govet
+    - importas
+    - ineffassign
+    - misspell
+    - revive
+    - rowserrcheck
+    - sqlclosecheck
+    - staticcheck
+    - structcheck
+    - stylecheck
+    - typecheck
+    - unused
+    - varcheck
