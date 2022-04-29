@@ -1,11 +1,21 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
+// https://go.dev/play/p/NhkljNuluRO credit to @morgahl_ from twitch
 func main() {
-	var i int
-	var f float64
-	var b bool
-	var s string
-	fmt.Printf("%v %v %v %q\n", i, f, b, s)
+	for i := range make([]struct{}, 5) {
+		go func() {
+			fmt.Println(i)
+		}()
+	}
+	for i := range make([]struct{}, 5) {
+		go func(i int) {
+			fmt.Println(i)
+		}(i)
+	}
+	time.Sleep(time.Second)
 }
