@@ -1,6 +1,6 @@
-# Build a scheduler
+# Build a worker pool
 
-Using the template provided in `main.go` build a scheduler using what learned about Go Channels and Goroutines. This example will accept number of 
+Using the template provided in `main.go` build a worker pool using what learned about Go Channels and Goroutines. This example will accept number of 
 workers and then use the workers to perform a task. It should take between 20-30 min? 
 <!-- how long should this take -->
 

@@ -9,11 +9,6 @@ import (
 // add code here run worker pool
 func runWorkerPool(ch chan string, wg *sync.WaitGroup, numWorkers int) {
 
-	for i := 0; i < numWorkers; i++ {
-		go worker(i, ch, wg)
-	}
-
-	wg.Wait()
 }
 
 // TODO: clean up main
