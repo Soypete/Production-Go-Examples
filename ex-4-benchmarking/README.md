@@ -18,6 +18,5 @@ Questions:
 
 ## Part 2:
 
-* access pprof
-* analyze memory
-* are there potential memory leaks?
+1. Run the code coverage tool
+2. write tests to achieve 60% code coverage.
