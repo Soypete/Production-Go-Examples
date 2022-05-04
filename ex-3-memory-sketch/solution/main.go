@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"math/rand"
+	"net/http"
+	_ "net/http/pprof"
 	"sync"
 	"time"
 )
@@ -24,6 +26,11 @@ func main() {
 	flag.Parse()
 	rand.Seed(time.Now().Unix())
 
+	// run pprof
+	go func() {
+		fmt.Println(http.ListenAndServe("localhost:6060", nil))
+	}()
+
 	wg := new(sync.WaitGroup)
 	ch := make(chan string, 10)
 
@@ -31,7 +38,8 @@ func main() {
 	// we already know the number of workers, we can increase the WaitGroup once
 	wg.Add(*numWorkers)
 
-	queueMessages(ch)
+	go queueMessages(ch)
+
 	runWorkerPool(ch, wg, *numWorkers)
 }
 
@@ -40,6 +48,7 @@ func getMessages() []string {
 	return []string{"Hello", "World", "!", "I'm", "a", "worker"}
 }
 
+// this will block and not close if the len(msgs) is larger than the channel buffer.
 func queueMessages(ch chan string) {
 	msgs := getMessages()
 	for _, msg := range msgs {
@@ -54,10 +63,10 @@ func queueMessages(ch chan string) {
 func worker(id int, ch chan string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for msg := range ch {
-		fmt.Printf("Worker %d received %s\n", id, msg)
 
 		// simulate work
-		length := time.Duration(rand.Int63n(5000))
-		time.Sleep(length * time.Millisecond)
+		length := time.Duration(rand.Int63n(100))
+		time.Sleep(length * time.Second)
+		fmt.Printf("Worker %d received %s\n", id, msg)
 	}
 }
