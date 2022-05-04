@@ -37,8 +37,38 @@ brew install graphviz
 run pprof while your worker-pool is executing
 
 ```bash
-go tool pprof -http=:18080 http://localhost:6060/debug/pprof/profile 
+go tool pprof -http=:18080 http://localhost:6060/debug/pprof/profile?seconds=30
 ```
+
+In the default graph each node is a function that your program is running. Size and color indicate how much cpu and time each function is taking.
+
+TODO: add commands of things to look for.
+
+to acces the commandline tool tool run
+``` bash
+go tool pprof http://localhost:6060/debug/pprof/allocs
+```
+
+in the command line tool you can search for functions like this
+
+```bash
+(pprof) list worker
+```
+
+will show you stats on your code.
+
+Definition:
+_span_: how long long a function ran for.
+_flat_: number of something
+_cum_: cumulative
+
+### step 5
+evaluate your memory profile and cpu profile with this command
+
+```go
+go test -cpuprofile cpu.prof -memprofile mem.prof -bench .
+go tool pprof cpu.prof
+``:
 
 Questions:
 
@@ -49,3 +79,4 @@ Questions:
 - [Scheduler saga](https://www.youtube.com/watch?v=YHRO5WQGh0k)
 - [](https://www.ardanlabs.com/blog/2019/05/garbage-collection-in-go-part2-gctraces.html)
 - [](https://dev.to/agamm/how-to-profile-go-with-pprof-in-30-seconds-592a)
+- [Two Go Programs, Three Different Profiling Techniques](https://www.youtube.com/watch?v=nok0aYiGiYA)

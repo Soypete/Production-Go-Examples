@@ -16,6 +16,45 @@ Questions:
 1. Post the amount of time your code to took execute with 10 workers, the os, and the processor (your can get this information with `go version`)
 	- example: 900ns darwin/arm64
 
+
+### additional practice
+also setup a memory and cpu profiles by adding these two command line flags
+```go
+var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to `file`")
+var memprofile = flag.String("memprofile", "", "write memory profile to `file`")
+```
+
+add this code to your main function to write your memory profile to a file that can be processed with the pprof tool.
+
+```go
+if *memprofile != "" {
+	f, err := os.Create(*memprofile)
+	if err != nil {
+		log.Fatal("could not create memory profile: ", err)
+	}
+	defer f.Close() // error handling omitted for example
+	runtime.GC() // get up-to-date statistics
+	if err := pprof.WriteHeapProfile(f); err != nil {
+		log.Fatal("could not write memory profile: ", err)
+	}
+}
+```
+
+add this code to your main function to write your cpu profile to a file that can be processed with the pprof tool.
+
+```go
+if *cpuprofile != "" {
+	f, err := os.Create(*cpuprofile)
+	if err != nil {
+		log.Fatal("could not create CPU profile: ", err)
+	}
+	defer f.Close() // error handling omitted for example
+	if err := pprof.StartCPUProfile(f); err != nil {
+		log.Fatal("could not start CPU profile: ", err)
+	}
+	defer pprof.StopCPUProfile()
+}
+```
 ## Part 2:
 
 1. Run the code coverage tool

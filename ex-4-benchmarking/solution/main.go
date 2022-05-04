@@ -3,9 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	_ "net/http/pprof"
+	"os"
+	"runtime"
+	"runtime/pprof"
 	"sync"
 	"time"
 )
@@ -20,17 +24,48 @@ func runWorkerPool(ch chan string, wg *sync.WaitGroup, numWorkers int) {
 	wg.Wait()
 }
 
+func runPprof(memprofile, cpuprofile string) {
+
+	go func() {
+		fmt.Println(http.ListenAndServe("localhost:6060", nil))
+	}()
+
+	if cpuprofile != "" {
+		f, err := os.Create(cpuprofile)
+		if err != nil {
+			log.Fatal("could not create CPU profile: ", err)
+		}
+		defer f.Close() // error handling omitted for example
+		if err := pprof.StartCPUProfile(f); err != nil {
+			log.Fatal("could not start CPU profile: ", err)
+		}
+		defer pprof.StopCPUProfile()
+	}
+
+	if memprofile != "" {
+		f, err := os.Create(memprofile)
+		if err != nil {
+			log.Fatal("could not create memory profile: ", err)
+		}
+		defer f.Close() // error handling omitted for example
+		runtime.GC()    // get up-to-date statistics
+		if err := pprof.WriteHeapProfile(f); err != nil {
+			log.Fatal("could not write memory profile: ", err)
+		}
+	}
+}
+
 // TODO: clean up main
 func main() {
 	numWorkers := flag.Int("workers", 1, "number of workers")
+	cpuprofile := flag.String("cpuprofile", "", "write cpu profile to `file`")
+	memprofile := flag.String("memprofile", "", "write memory profile to `file`")
 
 	flag.Parse()
 	rand.Seed(time.Now().Unix())
 
 	// run pprof
-	go func() {
-		fmt.Println(http.ListenAndServe("localhost:6060", nil))
-	}()
+	runPprof(*cpuprofile, *memprofile)
 
 	wg := new(sync.WaitGroup)
 	ch := make(chan string, 10)
@@ -56,7 +91,6 @@ func queueMessages(ch chan string) {
 		ch <- msg
 	}
 
-	// TODO: remove recurision and make this more better
 	queueMessages(ch)
 	// close the worker channel and signal there won't be any more data
 	close(ch)
