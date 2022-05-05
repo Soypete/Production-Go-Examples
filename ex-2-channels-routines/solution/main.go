@@ -14,8 +14,6 @@ func runWorkerPool(ch chan string, wg *sync.WaitGroup, numWorkers int) {
 	for i := 0; i < numWorkers; i++ {
 		go worker(i, ch, wg)
 	}
-	// wait for the workers to stop processing and exit
-	wg.Wait()
 }
 
 // TODO: clean up main
@@ -25,14 +23,17 @@ func main() {
 	rand.Seed(time.Now().Unix())
 
 	wg := new(sync.WaitGroup)
-	ch := make(chan string, 10)
+	ch := make(chan string)
 
 	// start the workers in the background and wait for data on the channel
 	// we already know the number of workers, we can increase the WaitGroup once
 	wg.Add(*numWorkers)
 
-	queueMessages(ch)
 	runWorkerPool(ch, wg, *numWorkers)
+	queueMessages(ch)
+
+	// wait for the workers to stop processing and exit
+	wg.Wait()
 }
 
 // getMessages gets a slice of messages to process
