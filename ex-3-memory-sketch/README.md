@@ -62,13 +62,6 @@ _span_: how long long a function ran for.
 _flat_: number of something
 _cum_: cumulative
 
-### step 5
-evaluate your memory profile and cpu profile with this command
-
-```go
-go test -cpuprofile cpu.prof -memprofile mem.prof -bench .
-go tool pprof cpu.prof
-``:
 
 Questions:
 
@@ -77,6 +70,6 @@ Questions:
 
 ## Resources: 
 - [Scheduler saga](https://www.youtube.com/watch?v=YHRO5WQGh0k)
-- [](https://www.ardanlabs.com/blog/2019/05/garbage-collection-in-go-part2-gctraces.html)
-- [](https://dev.to/agamm/how-to-profile-go-with-pprof-in-30-seconds-592a)
+- [GC traces](https://www.ardanlabs.com/blog/2019/05/garbage-collection-in-go-part2-gctraces.html)
+- [how to pprof](https://dev.to/agamm/how-to-profile-go-with-pprof-in-30-seconds-592a)
 - [Two Go Programs, Three Different Profiling Techniques](https://www.youtube.com/watch?v=nok0aYiGiYA)
