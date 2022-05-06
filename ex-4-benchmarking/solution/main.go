@@ -40,7 +40,6 @@ func getMessages() []string {
 // this will block and not close if the len(msgs) is larger than the channel buffer.
 func queueMessages(ch chan string) {
 	msgs := getMessages()
-	fmt.Println(cap(msgs), len(msgs))
 	for _, msg := range msgs {
 		ch <- msg
 	}
@@ -50,9 +49,9 @@ func queueMessages(ch chan string) {
 }
 
 func worker(ch chan string, wg *sync.WaitGroup) {
-	for msg := range ch {
+	for range ch {
 		// print msg
-		fmt.Printf("%s\n", msg)
+		// fmt.Printf("%s\n", msg)
 
 		// simulate work
 		length := time.Duration(rand.Int63n(50))
