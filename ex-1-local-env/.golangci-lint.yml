@@ -3,7 +3,7 @@ run:
   issues-exit-code: 2
   tests: false
   modules-download-mode: readonly
-  go: '1.18' 
+  go: '1.17' 
   linters:
   enable:
     - bodyclose
