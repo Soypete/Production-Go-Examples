@@ -22,7 +22,14 @@ Questions:
 	- example: 900ns darwin/arm64
 
 
-### additional practice
+### additional practice: Run pprof on your machine
+Start by installing graphviz on your machine
+
+On Mac:
+```bash
+brew install graphviz
+```
+
 also setup a memory and cpu profiles by adding these two command line flags
 ```go
 var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to `file`")
@@ -60,6 +67,21 @@ if *cpuprofile != "" {
 	defer pprof.StopCPUProfile()
 }
 ```
+Add a local server to your `func main()` for pprof to scrape:
+
+```go
+go func() {
+	log.Println(http.ListenAndServe("localhost:6060:, nil))
+}()
+```
+
+run you main.go in one window. In another window access pprof
+
+```bash
+go tool pprof http://localhost:6060/debug/pprof/profile?seconds=30
+```
+
+explore more commands [docs](pkg.go.dev/net/http/pprof).
 ## Part 2:
 
 1. Run the code coverage tool
