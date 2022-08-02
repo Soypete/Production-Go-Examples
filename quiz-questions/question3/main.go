@@ -12,10 +12,10 @@ func main() {
 			fmt.Println(i)
 		}()
 	}
-	for i := range make([]struct{}, 5) {
-		go func(i int) {
-			fmt.Println(i)
-		}(i)
-	}
+	// for i := range make([]struct{}, 5) {
+	// 	go func(i int) {
+	// 		fmt.Println(i)
+	// 	}(i)
+	// }
 	time.Sleep(time.Second)
 }
