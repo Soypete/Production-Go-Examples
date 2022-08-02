@@ -12,6 +12,8 @@ import (
 	"time"
 )
 
+var numWords int
+
 func runWorkerPool(ch chan string, wg *sync.WaitGroup, numWorkers int) {
 
 	// start the workers in the background and wait for data on the channel
@@ -48,10 +50,13 @@ func queueMessages(ch chan string) {
 }
 
 func worker(ch chan string, wg *sync.WaitGroup) {
+	var mu sync.Mutex
 	for msg := range ch {
 		// print msg
 		fmt.Printf("%s\n", msg)
-
+		mu.Lock()
+		numWords++
+		mu.Unlock()
 		// simulate work
 		length := time.Duration(rand.Int63n(50))
 		time.Sleep(length * time.Millisecond)

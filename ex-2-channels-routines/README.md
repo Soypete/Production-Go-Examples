@@ -1,7 +1,6 @@
 # Build a worker pool
 
-Using the template provided in `main.go` build a worker pool using what learned about Go Channels and Goroutines. This example will accept a number of 
-workers and then use the workers to perform a task. It should take between 10-15 min? 
+Using the template provided in `main.go` build a worker pool using what you learned about go channels and goroutines. This example will accept a number of workers as a flag `--workers` and then use the workers to perform a task. It should take between 10-15 min? 
 
 ## Step 1 build the worker pool
 

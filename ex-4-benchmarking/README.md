@@ -10,6 +10,11 @@ In this exercise we will use both tools to analytics our worker pool app.
 
 Complete the benchmarking test suite in the file `ex-4-bemarking/worker_test.go`. 
 
+run your benchmark tests using the command:
+```bash
+go test -bench=. -benchmem=true -benchtime=20s
+```
+
 Questions: 
 1. What information is provided by the benchmark?
 1. Do you consider you code efficient?

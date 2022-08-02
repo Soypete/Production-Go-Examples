@@ -3,12 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
-	"math/rand"
 	"os"
 	"strings"
 	"sync"
 	"time"
 )
+
+var numWords int
 
 func runWorkerPool(ch chan string, wg *sync.WaitGroup, numWorkers int) {
 
@@ -47,13 +48,16 @@ func queueMessages(ch chan string) {
 }
 
 func worker(ch chan string, wg *sync.WaitGroup) {
-	for msg := range ch {
-		// print msg
-		fmt.Printf("%s\n", msg)
+	var mu sync.Mutex
 
-		// simulate work
-		length := time.Duration(rand.Int63n(50))
-		time.Sleep(length * time.Millisecond)
+	for word := range ch {
+
+		if strings.Contains(word, "whal") {
+			// print msg
+			mu.Lock()
+			numWords++
+			mu.Unlock()
+		}
 	}
 }
 
@@ -62,9 +66,11 @@ func main() {
 	flag.Parse()
 	wg := new(sync.WaitGroup)
 	ch := make(chan string)
+	startTime := time.Now()
 
 	// start the workers in the background and wait for data on the channel
 	// we already know the number of workers, we can increase the WaitGroup once
 	go queueMessages(ch)
 	runWorkerPool(ch, wg, *numWorkers)
+	fmt.Printf("Number of words: %d\nTime to process file: %2f seconds", numWords, time.Since(startTime).Seconds())
 }
