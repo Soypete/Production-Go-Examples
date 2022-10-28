@@ -8,9 +8,9 @@ Visit the [golangci-lint](https://golangci-lint.run/usage/install/) site and ins
 
 ## Select Linters you want
 
-There many linters included as part of the Golangci-lint binary. The list of linters and description of what the linters check. Some linters overlap in functionality. Go thorugh the list and select some linters you want to apply. Use the command-line flags to run these against the `main.go` in the exercise . Here is an example of the command:
+There many linters included as part of the `golangci-lint` binary. The list of linters and description of what the linters check. Some linters overlap in functionality. Go thorugh the list and select some linters you want to apply. Use the command-line flags to run these against the `main.go` in the exercise. Here is an example of the command:
 ```bash
-golangci-lint run --enable deadcode errcheck govet
+golangci-lint run --no-config --disable-all --enable deadcode,errcheck,govet
 ```
 ## Add to IDE
 
@@ -27,5 +27,5 @@ Below are examples of my personal linting configurations.
 [link to dotfiles](https://github.com/Soypete/dotfiles/blob/main/vim/vimrc)
 
 ### Additional exercise: 
-You can create a `golangci-lint.yml` to store the configurations of our linters. An example file can be found [here](ex-1-local-env/.golangci-lint.yml). Additional configurations can also be found in [this file](https://github.com/golangci/golangci-lint/blob/master/.golangci.example.yml). And a `golangci-lint.yml` file to any local go repo you have and run the `golangci-lint run` command. Change the linter configs and try again.
+You can create a `.golangci.yml` to store the configurations of your linters. An example file can be found [here](.golangci.yml). Additional configurations can also be found in [this file](https://github.com/golangci/golangci-lint/blob/master/.golangci.reference.yml). Add a `.golangci.yml` file to any local go repo you have and run the `golangci-lint run` command. Change the linter configs and try again.
 
