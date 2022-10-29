@@ -1,10 +1,8 @@
 run:
-  timeout: 5m
-  issues-exit-code: 2
   tests: false
   modules-download-mode: readonly
-  go: '1.17' 
-  linters:
+linters:
+  disable-all: true
   enable:
     - bodyclose
     - deadcode
@@ -12,6 +10,8 @@ run:
     - errcheck
     - goconst
     - gocyclo
+    - godot
+    - godox
     - gofmt
     - gosimple
     - govet
