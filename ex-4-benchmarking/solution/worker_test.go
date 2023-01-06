@@ -10,8 +10,6 @@ func Benchmark5Workers(b *testing.B)  { benchmarkWorkers(5, b) }
 func Benchmark10Workers(b *testing.B) { benchmarkWorkers(10, b) }
 func Benchmark20Workers(b *testing.B) { benchmarkWorkers(20, b) }
 
-// func Benchmark40Workers(b *testing.B) { benchmarkWorkers(40, b) }
-
 func benchmarkWorkers(i int, b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		wg := new(sync.WaitGroup)

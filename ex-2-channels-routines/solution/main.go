@@ -57,6 +57,7 @@ func worker(ch chan string, wg *sync.WaitGroup) {
 			mu.Lock()
 			numWords++
 			mu.Unlock()
+			time.Sleep(5 * time.Millisecond)
 		}
 	}
 }

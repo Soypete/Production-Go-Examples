@@ -7,7 +7,7 @@ Using the free and opensource tool [Draw IO app](https://app.diagrams.net/) draw
 Run pprof and see what insights are available to you.
 
 ### Step 1:
-add pprof server to your worker-pool app. First add the pprof driver? to your app. 
+add pprof server to your worker-pool app. First add the pprof driver to your app. 
 
 ```go
 import _ "net/http/pprof"
