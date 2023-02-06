@@ -15,19 +15,31 @@ import (
 	"time"
 )
 
-func runWorkerPool(ch chan string, wg *sync.WaitGroup, numWorkers int) {
+type workerPool struct {
+	numWorkers int
+	mu         *sync.Mutex
+	msgs       chan string
+	wg         *sync.WaitGroup
+}
 
+func (wp *workerPool) run() int {
+	numWords := 0
 	// start the workers in the background and wait for data on the channel
 	// we already know the number of workers, we can increase the WaitGroup once
-	wg.Add(numWorkers)
-	for i := 0; i < numWorkers; i++ {
+	wp.wg.Add(wp.numWorkers)
+	for i := 0; i < wp.numWorkers; i++ {
 		go func() {
-			worker(ch, wg)
-			wg.Done()
+			defer wp.wg.Done()
+			wordsDetected := wp.detectWords()
+			wp.mu.Lock()
+			defer wp.mu.Unlock()
+			numWords = numWords + wordsDetected
 		}()
 	}
+
 	// wait for the workers to stop processing and exit
-	wg.Wait()
+	wp.wg.Wait()
+	return numWords
 }
 
 // getMessages gets a slice of messages to process
@@ -38,25 +50,31 @@ func getMessages() []string {
 }
 
 // this will block and not close if the len(msgs) is larger than the channel buffer.
-func queueMessages(ch chan string) {
+func (wp *workerPool) queueMessages() {
 	msgs := getMessages()
 	for _, msg := range msgs {
-		ch <- msg
+		// add messages to string channel
+		wp.msgs <- msg
 	}
 
 	// close the worker channel and signal there won't be any more data
-	close(ch)
+	close(wp.msgs)
 }
 
-func worker(ch chan string, wg *sync.WaitGroup) {
-	for range ch {
-		// print msg
-		// fmt.Printf("%s\n", msg)
-
-		// simulate work
-		length := time.Duration(rand.Int63n(50))
-		time.Sleep(length * time.Millisecond)
+func (wp workerPool) detectWords() int {
+	var numWordsDetected int
+	for word := range wp.msgs {
+		// this condition returns words like whale, whaling, whales
+		if strings.Contains(word, "whal") {
+			wp.mu.Lock()
+			numWordsDetected++
+			wp.mu.Unlock()
+			// simulate work
+			length := time.Duration(rand.Int63n(50))
+			time.Sleep(length * time.Millisecond)
+		}
 	}
+	return numWordsDetected
 }
 
 // export cpu and mem profiles to a file that can be processed by pprof tool
@@ -97,16 +115,22 @@ func main() {
 	memprofile := flag.String("memprofile", "", "write memory profile to `file`")
 
 	flag.Parse()
+	startTime := time.Now()
 	rand.Seed(time.Now().Unix())
 
 	// run pprof
 	runPprof(*cpuprofile, *memprofile)
 
-	wg := new(sync.WaitGroup)
-	ch := make(chan string)
+	workerPool := &workerPool{
+		wg:         new(sync.WaitGroup),
+		msgs:       make(chan string),
+		numWorkers: *numWorkers,
+		mu:         new(sync.Mutex),
+	}
 
 	// start the workers in the background and wait for data on the channel
 	// we already know the number of workers, we can increase the WaitGroup once
-	go queueMessages(ch)
-	runWorkerPool(ch, wg, *numWorkers)
+	go workerPool.queueMessages()
+	numWords := workerPool.run()
+	fmt.Printf("Number of words: %d\nTime to process file: %2f seconds", numWords, time.Since(startTime).Seconds())
 }
