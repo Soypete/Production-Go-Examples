@@ -42,8 +42,6 @@ go tool pprof -http=:18080 http://localhost:6060/debug/pprof/profile?seconds=30
 
 In the default graph each node is a function that your program is running. Size and color indicate how much cpu and time each function is taking.
 
-TODO: add commands of things to look for.
-
 to acces the commandline tool tool run
 ``` bash
 go tool pprof http://localhost:6060/debug/pprof/allocs
@@ -58,14 +56,10 @@ in the command line tool you can search for functions like this
 will show you stats on your code.
 
 Definition:
-_span_: how long long a function ran for.
+_span_: how long a function ran for.
 _flat_: number of something
 _cum_: cumulative
 
-
-Questions:
-
-- 
 
 
 ## Resources: 
