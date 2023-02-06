@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -87,7 +87,7 @@ func (c *Client) GetWebPage(url string) ([]byte, error) {
 	if err != nil {
 		return []byte{}, fmt.Errorf("failure in Do request:\n %w ---\n", err)
 	}
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return []byte{}, fmt.Errorf("Cannot parse response body: %w", err)
 	}
@@ -138,7 +138,7 @@ func runCrawler(w http.ResponseWriter, r *http.Request) {
 }
 
 func healthCheck(w http.ResponseWriter, r *http.Request) {
-	c, _ := ioutil.ReadDir("./")
+	c, _ := os.ReadDir("./")
 	fmt.Fprintln(w, "Listing subdir/parent")
 	for _, entry := range c {
 		fmt.Fprintln(w, " ", entry.Name(), entry.IsDir())

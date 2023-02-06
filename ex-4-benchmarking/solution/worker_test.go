@@ -12,9 +12,13 @@ func Benchmark20Workers(b *testing.B) { benchmarkWorkers(20, b) }
 
 func benchmarkWorkers(i int, b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		wg := new(sync.WaitGroup)
-		ch := make(chan string)
-		go queueMessages(ch)
-		runWorkerPool(ch, wg, i)
+		workerPool := &workerPool{
+			wg:         new(sync.WaitGroup),
+			msgs:       make(chan string),
+			numWorkers: i,
+			mu:         new(sync.Mutex),
+		}
+		go workerPool.queueMessages()
+		_ = workerPool.run()
 	}
 }

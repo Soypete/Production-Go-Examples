@@ -9,10 +9,19 @@ import (
 	"time"
 )
 
-var numWords int
+type workerPool struct {
+	numWorkers int
+	mu         *sync.Mutex
+	msgs       chan string
+	wg         *sync.WaitGroup
+}
 
-func runWorkerPool(ch chan string, wg *sync.WaitGroup, numWorkers int) {
-	// TODO: add code here
+func (wp *workerPool) run() int {
+	totalNumberWords := 0
+	// TODO: add logic for queueing workers based on the number provided in the flag.
+	// add the number of words detected by each worker to the totalNumberWorkder
+
+	return totalNumberWords
 }
 
 // getMessages gets a slice of messages to process
@@ -23,42 +32,48 @@ func getMessages() []string {
 }
 
 // this will block and not close if the len(msgs) is larger than the channel buffer.
-func queueMessages(ch chan string) {
+func (wp *workerPool) queueMessages() {
 	msgs := getMessages()
 	for _, msg := range msgs {
 		// add messages to string channel
-		ch <- msg
+		wp.msgs <- msg
 	}
 
 	// close the worker channel and signal there won't be any more data
-	close(ch)
+	close(wp.msgs)
 
 }
 
-func worker(ch chan string, wg *sync.WaitGroup) {
-	var mu sync.Mutex
+func (wp workerPool) detectWords() int {
+	var numWordsDetected int
+	for word := range wp.msgs {
 
-	for word := range ch {
-
+		// this condition returns words like whale, whaling, whales
 		if strings.Contains(word, "whal") {
-			// print msg
-			mu.Lock()
-			numWords++
-			mu.Unlock()
+			wp.mu.Lock()
+			numWordsDetected++
+			wp.mu.Unlock()
+			time.Sleep(5 * time.Millisecond)
 		}
 	}
+	return numWordsDetected
 }
 
 func main() {
 	numWorkers := flag.Int("workers", 1, "number of workers")
 	flag.Parse()
-	wg := new(sync.WaitGroup)
-	ch := make(chan string)
+
+	workerPool := &workerPool{
+		wg:         new(sync.WaitGroup),
+		msgs:       make(chan string),
+		numWorkers: *numWorkers,
+		mu:         new(sync.Mutex),
+	}
 	startTime := time.Now()
 
 	// start the workers in the background and wait for data on the channel
 	// we already know the number of workers, we can increase the WaitGroup once
-	go queueMessages(ch)
-	runWorkerPool(ch, wg, *numWorkers)
+	go workerPool.queueMessages()
+	numWords := workerPool.run()
 	fmt.Printf("Number of words: %d\nTime to process file: %2f seconds", numWords, time.Since(startTime).Seconds())
 }
