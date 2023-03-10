@@ -64,14 +64,14 @@ func (wp *workerPool) queueMessages() {
 func (wp workerPool) detectWords() int {
 	var numWordsDetected int
 	for word := range wp.msgs {
+		// simulate work
+		length := time.Duration(rand.Int63n(50))
+		time.Sleep(length * time.Millisecond)
 		// this condition returns words like whale, whaling, whales
 		if strings.Contains(word, "whal") {
 			wp.mu.Lock()
 			numWordsDetected++
 			wp.mu.Unlock()
-			// simulate work
-			length := time.Duration(rand.Int63n(50))
-			time.Sleep(length * time.Millisecond)
 		}
 	}
 	return numWordsDetected

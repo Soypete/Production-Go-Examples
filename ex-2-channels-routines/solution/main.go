@@ -54,7 +54,7 @@ func (wp *workerPool) queueMessages() {
 	// close the worker channel and signal there won't be any more data
 	close(wp.msgs)
 
-}
+
 
 func (wp workerPool) detectWords() int {
 	var numWordsDetected int

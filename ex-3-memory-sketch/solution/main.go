@@ -63,15 +63,14 @@ func (wp workerPool) detectWords() int {
 	for word := range wp.msgs {
 		// print detected word to slow down processing and run pprof
 		fmt.Printf("%s\n", word)
-
+		// simulate work
+		length := time.Duration(rand.Int63n(100))
+		time.Sleep(length * time.Millisecond)
 		// this condition returns words like whale, whaling, whales
 		if strings.Contains(word, "whal") {
 			wp.mu.Lock()
 			numWordsDetected++
 			wp.mu.Unlock()
-			// simulate work
-			length := time.Duration(rand.Int63n(50))
-			time.Sleep(length * time.Millisecond)
 		}
 	}
 	return numWordsDetected

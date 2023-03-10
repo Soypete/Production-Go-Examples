@@ -4,7 +4,7 @@ Using the template provided in `main.go` build a worker pool using what you lear
 
 ## Step 1 build the worker pool
 
-Fill in the `func scheduleWorkers()` to queue up the amount of workers input via command line arguments.
+Fill in the `func (wp *workerPool) run()` to queue up the amount of workers input via command line arguments.
 
 ## Step 2 running your code
 
