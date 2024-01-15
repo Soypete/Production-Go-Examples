@@ -20,6 +20,12 @@ These exercises are for people programming but who are new to the go programming
 - [Golang Bot](https://golangbot.com/learn-golang-series/)
 - [Learn Go](https://go.dev/learn/)
 
+## Exercises
+
+[Exercise 1](/exercise-1/README.md)
+[Exercise 2](/exercise-2/README.md)
+[Exercise 3](/exercise-3/README.md)
+
 ### Solutions
 
 There are examples of solutions for each exercise in the internal solutions directory. They are not the only possible solutions to the exercises but are references that can be used if you get stuck.
