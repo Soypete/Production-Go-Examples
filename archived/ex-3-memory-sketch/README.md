@@ -64,6 +64,8 @@ _cum_: cumulative
 
 ## Resources: 
 - [Scheduler saga](https://www.youtube.com/watch?v=YHRO5WQGh0k)
+- [pprof for beginners]()
+- [pprof docs]()
 - [GC traces](https://www.ardanlabs.com/blog/2019/05/garbage-collection-in-go-part2-gctraces.html)
 - [how to pprof](https://dev.to/agamm/how-to-profile-go-with-pprof-in-30-seconds-592a)
 - [Two Go Programs, Three Different Profiling Techniques](https://www.youtube.com/watch?v=nok0aYiGiYA)
