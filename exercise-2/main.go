@@ -97,8 +97,8 @@ func runPprof(memprofile, cpuprofile string) {
 
 func main() {
 	numWorkers := flag.Int("workers", 1, "number of workers")
-	cpuprofile := flag.String("cpuprofile", "", "write cpu profile to `file`")
-	memprofile := flag.String("memprofile", "", "write memory profile to `file`")
+	cpuprofile := flag.String("cpuprofile", "cpu.prof", "write cpu profile to `file`")
+	memprofile := flag.String("memprofile", "mem.prof", "write memory profile to `file`")
 
 	flag.Parse()
 	startTime := time.Now()
