@@ -1,4 +1,4 @@
-# Exercise 3 - Draw Go Scheduler
+# Exercise 1 - Draw Go Scheduler
 
 ## Part 1 - scheduling a single process go app: 
 Using the free and opensource tool [Draw IO app](https://app.diagrams.net/) draw a diagram worker-pool app from the last exercise being scheduled by the Go Scheduler
