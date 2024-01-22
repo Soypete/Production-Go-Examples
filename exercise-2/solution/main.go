@@ -44,8 +44,8 @@ func (wp *workerPool) run() int {
 
 // getMessages gets a slice of messages to process
 func getMessages() []string {
-	// file, _ := os.ReadFile("datums/melville-moby_dick.txt")
-	words := strings.Split("We dont want to overload io threads and the runtime while we are benchmarking, so we are addings some others words that are not as much but talk about go and other cool software things", " ")
+	file, _ := os.ReadFile("datums/melville-moby_dick.txt")
+	words := strings.Split(string(file), " ")
 	return words
 }
 
