@@ -45,7 +45,7 @@ func (wp *workerPool) run() int {
 // getMessages gets a slice of messages to process
 func getMessages() []string {
 	// file, _ := os.ReadFile("datums/melville-moby_dick.txt")
-	words := strings.Split("We dont want to overload io threads and the runtime while we are benchmarking, so we are addings some others words that are not as much but talk about go and other cool software things", " ")
+	words := strings.Split("We dont want to overload whale io threads and the runtime whaling while we are benchmarking, so we are addings some others words whales that are not as much but talk about go and whaling other cool software things", " ")
 	return words
 }
 
@@ -69,9 +69,7 @@ func (wp workerPool) detectWords() int {
 		time.Sleep(length * time.Millisecond)
 		// this condition returns words like whale, whaling, whales
 		if strings.Contains(word, "whal") {
-			wp.mu.Lock()
 			numWordsDetected++
-			wp.mu.Unlock()
 		}
 	}
 	return numWordsDetected
